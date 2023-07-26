@@ -1,44 +1,163 @@
 
 
 // Chakra imports
-import { Box, SimpleGrid } from "@chakra-ui/react";
-import DevelopmentTable from "views/admin/dataTables/components/DevelopmentTable";
-import CheckTable from "views/admin/dataTables/components/CheckTable";
-import ColumnsTable from "views/admin/dataTables/components/ColumnsTable";
-import ComplexTable from "views/admin/dataTables/components/ComplexTable";
+import { Box, Button, Flex, FormControl, FormLabel, Icon, Input, InputGroup, InputRightElement, SimpleGrid, Text } from "@chakra-ui/react";
+import CheckTable from "./components/CheckTable";
 import {
-  columnsDataDevelopment,
-  columnsDataCheck,
-  columnsDataColumns,
-  columnsDataComplex,
-} from "views/admin/dataTables/variables/columnsData";
-import tableDataDevelopment from "views/admin/dataTables/variables/tableDataDevelopment.json";
-import tableDataCheck from "views/admin/dataTables/variables/tableDataCheck.json";
-import tableDataColumns from "views/admin/dataTables/variables/tableDataColumns.json";
-import tableDataComplex from "views/admin/dataTables/variables/tableDataComplex.json";
+  columnsDataCheck
+} from "./variables/columnsData";
+// import tableDataCheck from "./variables/tableDataCheck.json";
 import React from "react";
 
 export default function AddTeacher() {
-  // Chakra Color Mode
+
+
+  const tableDataCheck = [
+    {
+      name: ["Matematika", false]
+    },
+    {
+      name: ["Matematika", true]
+    },
+    {
+      name: ["Matematika", true]
+    },
+    {
+      name: ["Matematika", true]
+    },
+    {
+      name: ["Matematika", false]
+    },
+    {
+      name: ["Matematika", false]
+    },
+    {
+      name: ["Matematika", false]
+    },
+    {
+      name: ["Matematika", false]
+    },
+    {
+      name: ["Matematika", false]
+    },
+    {
+      name: ["Matematika", false]
+    },
+    {
+      name: ["Matematika", false],
+    },
+    {
+      name: ["Matematika", false],
+    },
+    {
+      name: ["Matematika", false],
+    }
+  ]
+
+
+
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
       <SimpleGrid
         mb='20px'
-        columns={{ sm: 1, md: 2 }}
+        columns={{ sm: 1, md: 3 }}
         spacing={{ base: "20px", xl: "20px" }}>
-        <DevelopmentTable
-          columnsData={columnsDataDevelopment}
-          tableData={tableDataDevelopment}
-        />
+        <FormControl px='40px'>
+          <form>
+            <FormLabel
+              display='flex'
+              ms='4px'
+              fontSize='sm'
+              fontWeight='500'
+              mb='8px'
+              >
+              Ism
+            </FormLabel>
+            <Input
+              isRequired={true}
+              variant='auth'
+              fontSize='sm'
+              ms={{ base: "0px", md: "0px" }}
+              type='text'
+              placeholder='Ism'
+              mb='24px'
+              fontWeight='500'
+              size='lg'
+            />
+
+            <FormLabel
+              display='flex'
+              ms='4px'
+              fontSize='sm'
+              fontWeight='500'
+              mb='8px'>
+              Familiya
+            </FormLabel>
+            <Input
+              isRequired={true}
+              variant='auth'
+              fontSize='sm'
+              ms={{ base: "0px", md: "0px" }}
+              type='text'
+              placeholder='Familiya'
+              mb='24px'
+              fontWeight='500'
+              size='lg'
+            />
+
+            <FormLabel
+              display='flex'
+              ms='4px'
+              fontSize='sm'
+              fontWeight='500'
+              mb='8px'>
+              Username
+            </FormLabel>
+            <Input
+              isRequired={true}
+              variant='auth'
+              fontSize='sm'
+              ms={{ base: "0px", md: "0px" }}
+              type='text'
+              placeholder='Username'
+              mb='24px'
+              fontWeight='500'
+              size='lg'
+            />
+
+            <FormLabel
+              display='flex'
+              ms='4px'
+              fontSize='sm'
+              fontWeight='500'
+              mb='8px'>
+              Parol
+            </FormLabel>
+            <Input
+              isRequired={true}
+              variant='auth'
+              fontSize='sm'
+              ms={{ base: "0px", md: "0px" }}
+              type='text'
+              placeholder='Parol'
+              mb='24px'
+              fontWeight='500'
+              size='lg'
+            />
+            <Button
+              fontSize='sm'
+              variant='brand'
+              fontWeight='500'
+              w='100%'
+              h='50'
+              mb='24px'
+              type="submit"
+            >
+              Qo'shish
+            </Button>
+          </form>
+        </FormControl>
         <CheckTable columnsData={columnsDataCheck} tableData={tableDataCheck} />
-        <ColumnsTable
-          columnsData={columnsDataColumns}
-          tableData={tableDataColumns}
-        />
-        <ComplexTable
-          columnsData={columnsDataComplex}
-          tableData={tableDataComplex}
-        />
       </SimpleGrid>
     </Box>
   );
