@@ -47,6 +47,7 @@ import illustration from "assets/img/auth/auth.png";
 import { FcGoogle } from "react-icons/fc";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { RiEyeCloseLine } from "react-icons/ri";
+import axios from "axios";
 
 function SignIn() {
   // Chakra color mode
@@ -77,12 +78,23 @@ function SignIn() {
   }
 
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     localStorage.setItem('token', 'ahcsbakjcaics')
     localStorage.setItem('role', 1)
     localStorage.setItem('user', JSON.stringify({ username: username.current.value, password: password.current.value }))
     location.replace('/')
+
+    // await axios.post('httpUrl', { username: username.current.value, password: password.current.value }, {
+    //   headers: {
+    //     "Content-Type": "application/json"
+    //   }
+    // }).then(res => {
+    //   localStorage.setItem('token', 'ahcsbakjcaics')
+    //   localStorage.setItem('role', 3)
+    //   localStorage.setItem('user', JSON.stringify({ username: username.current.value, password: password.current.value }))
+    //   location.replace('/')
+    // }).catch(err => console.log(err))
   }
 
 

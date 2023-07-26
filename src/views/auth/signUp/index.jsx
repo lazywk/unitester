@@ -21,7 +21,7 @@
 
 */
 
-import React from "react";
+import React, { useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 // Chakra imports
 import {
@@ -47,6 +47,7 @@ import illustration from "assets/img/auth/auth.png";
 import { FcGoogle } from "react-icons/fc";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { RiEyeCloseLine } from "react-icons/ri";
+import axios from "axios";
 
 function SignUp() {
     // Chakra color mode
@@ -55,18 +56,78 @@ function SignUp() {
     const textColorDetails = useColorModeValue("navy.700", "secondaryGray.600");
     const textColorBrand = useColorModeValue("brand.500", "white");
     const brandStars = useColorModeValue("brand.500", "brand.400");
-    const googleBg = useColorModeValue("secondaryGray.300", "whiteAlpha.200");
-    const googleText = useColorModeValue("navy.700", "white");
-    const googleHover = useColorModeValue(
-        { bg: "gray.200" },
-        { bg: "whiteAlpha.300" }
-    );
-    const googleActive = useColorModeValue(
-        { bg: "secondaryGray.300" },
-        { bg: "whiteAlpha.200" }
-    );
     const [show, setShow] = React.useState(false);
     const handleClick = () => setShow(!show);
+
+
+
+
+    const firstName = useRef()
+    const lastName = useRef()
+    const username = useRef()
+    const phoneNumber = useRef()
+    const password = useRef()
+    const confirimationCode = useRef()
+
+    const [isSMS, setIsSMS] = useState(false)
+    const [smsResponse, setSmsResponse] = useState({})
+
+    const sendUserData = async (data) => {
+        await axios.post('httpUrl', data, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(res => {
+            console.log(res);
+            setSmsResponse(res.data)
+        }).catch(err => console.log(err))
+    }
+
+    const handleRegister = e => {
+        e.preventDefault()
+        console.log({
+            first_name: firstName.current.value,
+            last_name: lastName.current.value,
+            username: username.current.value,
+            phone_number: phoneNumber.current.value,
+            password: password.current.value,
+        })
+        // sendUserData({
+        //     first_name: firstName.current.value,
+        //     last_name: lastName.current.value,
+        //     username: username.current.value,
+        //     phone_number: phoneNumber.current.value,
+        //     password: password.current.value,
+        // })
+        setIsSMS(true)
+    }
+
+    const sendSms = async (sms) => {
+        localStorage.setItem('token', 'ahcsbakjcaics')
+        localStorage.setItem('role', 3)
+        localStorage.setItem('user', JSON.stringify({ username: 'username', password: 'password' }))
+        location.replace('/')
+        // if (sms === smsResponse) {
+        //     await axios.post('httpUrl', { code: sms }, {
+        //         headers: {
+        //             'Content-Type': 'application/json'
+        //         }
+        //     }).then(res => {
+        //         localStorage.setItem('token', 'ahcsbakjcaics')
+        //         localStorage.setItem('role', 3)
+        //         localStorage.setItem('user', JSON.stringify({ username: username.current.value, password: password.current.value }))
+        //         location.replace('/')
+        //     }).catch(err => console.log(err))
+        // }
+    }
+
+    const handleRegisterConfirm = (e) => {
+        e.preventDefault()
+        sendSms(Number(confirimationCode.current.value))
+    }
+
+
+
     return (
         <DefaultAuth illustrationBackground={illustration} image={illustration}>
             <Flex
@@ -77,13 +138,15 @@ function SignUp() {
                 h='100%'
                 alignItems='start'
                 justifyContent='center'
-                mb={{ base: "30px", md: "60px" }}
+                mb={{ base: "30px", md: "10px" }}
                 px={{ base: "25px", md: "0px" }}
-                mt={{ base: "40px", md: "14vh" }}
+                mt={{ base: "20px", md: "10vh" }}
                 flexDirection='column'>
                 <Box me='auto'>
-                    <Heading color={textColor} fontSize='36px' mb='10px'>
-                        Ro'yxatdan o'tish
+                    <Heading color={textColor} fontSize='36px' mb='10px' style={{ maxWidth: 500 }}>
+                        {
+                            isSMS ? "Raqamingizga yuborilgan sms kodni kiriting" : "Ro'yxatdan o'tish"
+                        }
                     </Heading>
                 </Box>
                 <Flex
@@ -97,148 +160,175 @@ function SignUp() {
                     me='auto'
                     mb={{ base: "20px", md: "auto" }}>
                     <FormControl>
-                        <FormLabel
-                            display='flex'
-                            ms='4px'
-                            fontSize='sm'
-                            fontWeight='500'
-                            color={textColor}
-                            mb='8px'>
-                            Ism<Text color={brandStars}>*</Text>
-                        </FormLabel>
-                        <Input
-                            isRequired={true}
-                            variant='auth'
-                            fontSize='sm'
-                            ms={{ base: "0px", md: "0px" }}
-                            type='text'
-                            placeholder='Ismingiz'
-                            mb='24px'
-                            fontWeight='500'
-                            size='lg'
-                        />
+                        {
+                            isSMS ? (
+                                <form onSubmit={handleRegisterConfirm}>
+                                    <FormLabel
+                                        display='flex'
+                                        ms='4px'
+                                        fontSize='sm'
+                                        fontWeight='500'
+                                        color={textColor}
+                                        mb='8px'>
+                                        Tasdiqlash kodi<Text color={brandStars}>*</Text>
+                                    </FormLabel>
+                                    <Input
+                                        isRequired={true}
+                                        variant='auth'
+                                        fontSize='sm'
+                                        ms={{ base: "0px", md: "0px" }}
+                                        type='number'
+                                        placeholder='Tasdiqlash kodi'
+                                        mb='24px'
+                                        fontWeight='500'
+                                        size='lg'
+                                        ref={confirimationCode}
+                                    />
+                                    <Button
+                                        fontSize='sm'
+                                        variant='brand'
+                                        fontWeight='500'
+                                        w='100%'
+                                        h='50'
+                                        mb='24px'
+                                        type="submit"
+                                    >
+                                        Tasdiqlash
+                                    </Button>
+                                </form>
+                            ) : (
+                                <form onSubmit={handleRegister}>
+                                    <FormLabel
+                                        display='flex'
+                                        ms='4px'
+                                        fontSize='sm'
+                                        fontWeight='500'
+                                        color={textColor}
+                                        mb='8px'>
+                                        Ism<Text color={brandStars}>*</Text>
+                                    </FormLabel>
+                                    <Input
+                                        isRequired={true}
+                                        variant='auth'
+                                        fontSize='sm'
+                                        ms={{ base: "0px", md: "0px" }}
+                                        type='text'
+                                        placeholder='Ismingiz'
+                                        mb='24px'
+                                        fontWeight='500'
+                                        size='lg'
+                                        ref={firstName}
+                                    />
 
-                        <FormLabel
-                            display='flex'
-                            ms='4px'
-                            fontSize='sm'
-                            fontWeight='500'
-                            color={textColor}
-                            mb='8px'>
-                            Familiya<Text color={brandStars}>*</Text>
-                        </FormLabel>
-                        <Input
-                            isRequired={true}
-                            variant='auth'
-                            fontSize='sm'
-                            ms={{ base: "0px", md: "0px" }}
-                            type='text'
-                            placeholder='Familiya'
-                            mb='24px'
-                            fontWeight='500'
-                            size='lg'
-                        />
+                                    <FormLabel
+                                        display='flex'
+                                        ms='4px'
+                                        fontSize='sm'
+                                        fontWeight='500'
+                                        color={textColor}
+                                        mb='8px'>
+                                        Familiya<Text color={brandStars}>*</Text>
+                                    </FormLabel>
+                                    <Input
+                                        isRequired={true}
+                                        variant='auth'
+                                        fontSize='sm'
+                                        ms={{ base: "0px", md: "0px" }}
+                                        type='text'
+                                        placeholder='Familiya'
+                                        mb='24px'
+                                        fontWeight='500'
+                                        size='lg'
+                                        ref={lastName}
+                                    />
 
-                        <FormLabel
-                            display='flex'
-                            ms='4px'
-                            fontSize='sm'
-                            fontWeight='500'
-                            color={textColor}
-                            mb='8px'>
-                            Username<Text color={brandStars}>*</Text>
-                        </FormLabel>
-                        <Input
-                            isRequired={true}
-                            variant='auth'
-                            fontSize='sm'
-                            ms={{ base: "0px", md: "0px" }}
-                            type='text'
-                            placeholder='@doniyorcoder'
-                            mb='24px'
-                            fontWeight='500'
-                            size='lg'
-                        />
+                                    <FormLabel
+                                        display='flex'
+                                        ms='4px'
+                                        fontSize='sm'
+                                        fontWeight='500'
+                                        color={textColor}
+                                        mb='8px'>
+                                        Username<Text color={brandStars}>*</Text>
+                                    </FormLabel>
+                                    <Input
+                                        isRequired={true}
+                                        variant='auth'
+                                        fontSize='sm'
+                                        ms={{ base: "0px", md: "0px" }}
+                                        type='text'
+                                        placeholder='@doniyorcoder'
+                                        mb='24px'
+                                        fontWeight='500'
+                                        size='lg'
+                                        ref={username}
+                                    />
 
-                        <FormLabel
-                            display='flex'
-                            ms='4px'
-                            fontSize='sm'
-                            fontWeight='500'
-                            color={textColor}
-                            mb='8px'>
-                            Email<Text color={brandStars}>*</Text>
-                        </FormLabel>
-                        <Input
-                            isRequired={true}
-                            variant='auth'
-                            fontSize='sm'
-                            ms={{ base: "0px", md: "0px" }}
-                            type='email'
-                            placeholder='Email'
-                            mb='24px'
-                            fontWeight='500'
-                            size='lg'
-                        />
-
-                        <FormLabel
-                            display='flex'
-                            ms='4px'
-                            fontSize='sm'
-                            fontWeight='500'
-                            color={textColor}
-                            mb='8px'>
-                            Telefon raqam<Text color={brandStars}>*</Text>
-                        </FormLabel>
-                        <Input
-                            isRequired={true}
-                            variant='auth'
-                            fontSize='sm'
-                            ms={{ base: "0px", md: "0px" }}
-                            type='tel'
-                            placeholder='Telefon raqam'
-                            mb='24px'
-                            fontWeight='500'
-                            size='lg'
-                        />
+                                    <FormLabel
+                                        display='flex'
+                                        ms='4px'
+                                        fontSize='sm'
+                                        fontWeight='500'
+                                        color={textColor}
+                                        mb='8px'>
+                                        Telefon raqam<Text color={brandStars}>*</Text>
+                                    </FormLabel>
+                                    <Input
+                                        isRequired={true}
+                                        variant='auth'
+                                        fontSize='sm'
+                                        ms={{ base: "0px", md: "0px" }}
+                                        type='tel'
+                                        placeholder='Telefon raqam'
+                                        mb='24px'
+                                        fontWeight='500'
+                                        size='lg'
+                                        ref={phoneNumber}
+                                    />
 
 
-                        <FormLabel
-                            ms='4px'
-                            fontSize='sm'
-                            fontWeight='500'
-                            color={textColor}
-                            display='flex'>
-                            Password<Text color={brandStars}>*</Text>
-                        </FormLabel>
-                        <InputGroup size='md'>
-                            <Input
-                                isRequired={true}
-                                fontSize='sm'
-                                placeholder='Min. 8 characters'
-                                mb='24px'
-                                size='lg'
-                                type={show ? "text" : "password"}
-                                variant='auth'
-                            />
-                            <InputRightElement display='flex' alignItems='center' mt='4px'>
-                                <Icon
-                                    color={textColorSecondary}
-                                    _hover={{ cursor: "pointer" }}
-                                    as={show ? RiEyeCloseLine : MdOutlineRemoveRedEye}
-                                    onClick={handleClick}
-                                />
-                            </InputRightElement>
-                        </InputGroup>
-                        <Button
-                            fontSize='sm'
-                            variant='brand'
-                            fontWeight='500'
-                            w='100%'
-                            h='50'
-                            mb='24px'>
-                            Ro'yxatdan o'tish
-                        </Button>
+                                    <FormLabel
+                                        ms='4px'
+                                        fontSize='sm'
+                                        fontWeight='500'
+                                        color={textColor}
+                                        display='flex'>
+                                        Password<Text color={brandStars}>*</Text>
+                                    </FormLabel>
+                                    <InputGroup size='md'>
+                                        <Input
+                                            isRequired={true}
+                                            fontSize='sm'
+                                            placeholder='Min. 8 characters'
+                                            mb='24px'
+                                            size='lg'
+                                            type={show ? "text" : "password"}
+                                            variant='auth'
+                                            ref={password}
+                                        />
+                                        <InputRightElement display='flex' alignItems='center' mt='4px'>
+                                            <Icon
+                                                color={textColorSecondary}
+                                                _hover={{ cursor: "pointer" }}
+                                                as={show ? RiEyeCloseLine : MdOutlineRemoveRedEye}
+                                                onClick={handleClick}
+                                            />
+                                        </InputRightElement>
+                                    </InputGroup>
+                                    <Button
+                                        fontSize='sm'
+                                        variant='brand'
+                                        fontWeight='500'
+                                        w='100%'
+                                        h='50'
+                                        mb='24px'
+                                        type="submit"
+                                    >
+                                        Ro'yxatdan o'tish
+                                    </Button>
+                                </form>
+                            )
+                        }
                     </FormControl>
                     <Flex
                         flexDirection='column'
@@ -259,9 +349,9 @@ function SignUp() {
                             </NavLink>
                         </Text>
                     </Flex>
-                </Flex>
-            </Flex>
-        </DefaultAuth>
+                </Flex >
+            </Flex >
+        </DefaultAuth >
     );
 }
 

@@ -5,7 +5,9 @@ import {
   MdBarChart,
   MdPerson,
   MdHome,
-  MdLock
+  MdLock,
+  MdAddBox,
+  MdGroup
 } from "react-icons/md";
 
 // Admin Imports
@@ -17,6 +19,7 @@ import DataTables from "views/admin/dataTables";
 import SignInCentered from "views/auth/signIn";
 import SignUp from "views/auth/signUp";
 import Teachers from "views/admin/teachers";
+import AddTeacher from "views/admin/addTeacher";
 
 const token = localStorage.getItem('token')
 const role = Number(localStorage.getItem('role'))
@@ -30,26 +33,33 @@ const routes = token ? role === 1 ? [
     icon: <Icon as={MdPerson} width='20px' height='20px' color='inherit' />,
     component: Teachers,
   },
+  {
+    name: "O'qituvchi qo'shish",
+    layout: "/admin",
+    path: "/add-teacher",
+    icon: <Icon as={MdAddBox} width='20px' height='20px' color='inherit' />,
+    component: AddTeacher,
+  }
 ] : role === 2 ? [
   {
     name: "O'quvchilar",
     layout: "/admin",
     path: "/home",
-    icon: <Icon as={MdPerson} width='20px' height='20px' color='inherit' />,
+    icon: <Icon as={MdGroup} width='20px' height='20px' color='inherit' />,
     component: Teachers,
   },
   {
     name: "Kontestlar",
     layout: "/admin",
     path: "/contests",
-    icon: <Icon as={MdPerson} width='20px' height='20px' color='inherit' />,
+    icon: <Icon as={MdBarChart} width='20px' height='20px' color='inherit' />,
     component: Teachers,
   },
   {
     name: "Test qo'shish",
     layout: "/admin",
     path: "/create-test",
-    icon: <Icon as={MdPerson} width='20px' height='20px' color='inherit' />,
+    icon: <Icon as={MdAddBox} width='20px' height='20px' color='inherit' />,
     component: Teachers,
   },
 ] : [
