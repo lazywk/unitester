@@ -67,7 +67,6 @@ export default function ColumnsTable(props) {
           lineHeight='100%'>
           Barcha Kontestlar
         </Text>
-        <Menu />
       </Flex>
       <Table {...getTableProps()} variant='simple' color='gray.500' mb='24px'>
         <Thead>
@@ -141,6 +140,12 @@ export default function ColumnsTable(props) {
                     data = (
                       <Text color={textColor} fontSize='sm' fontWeight='700' >
                         {cell.value.map(el => el + " ")}
+                      </Text>
+                    );
+                  } else if (cell.column.Header === "QATNASHCHILAR") {
+                    data = (
+                      <Text color={textColor} fontSize='sm' fontWeight='700'>
+                        {cell.value}
                       </Text>
                     );
                   }

@@ -69,6 +69,10 @@ export const columnsDataComplex = [
     accessor: "fanlar",
   },
   {
+    Header: "QATNASHCHILAR",
+    accessor: "participants",
+  },
+  {
     Header: "SANA",
     accessor: "date",
   },

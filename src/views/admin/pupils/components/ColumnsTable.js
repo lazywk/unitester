@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Flex,
   Table,
   Tbody,
@@ -96,7 +95,7 @@ export default function ColumnsTable(props) {
                     data = (
                       <Flex align='center'>
                         <Text color={textColor} fontSize='sm' fontWeight='700'>
-                          <Avatar width={10} height={10}/>
+                          A
                         </Text>
                       </Flex>
                     );
