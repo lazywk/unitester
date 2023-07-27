@@ -20,6 +20,8 @@ import SignInCentered from "views/auth/signIn";
 import SignUp from "views/auth/signUp";
 import Teachers from "views/admin/teachers";
 import AddTeacher from "views/admin/addTeacher";
+import Pupils from "views/admin/pupils";
+import Contests from "views/admin/contest";
 
 const token = localStorage.getItem('token')
 const role = Number(localStorage.getItem('role'))
@@ -46,14 +48,14 @@ const routes = token ? role === 1 ? [
     layout: "/admin",
     path: "/home",
     icon: <Icon as={MdGroup} width='20px' height='20px' color='inherit' />,
-    component: Teachers,
+    component: Pupils,
   },
   {
     name: "Kontestlar",
     layout: "/admin",
     path: "/contests",
     icon: <Icon as={MdBarChart} width='20px' height='20px' color='inherit' />,
-    component: Teachers,
+    component: Contests,
   },
   {
     name: "Test qo'shish",

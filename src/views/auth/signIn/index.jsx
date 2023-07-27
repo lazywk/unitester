@@ -81,7 +81,7 @@ function SignIn() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     localStorage.setItem('token', 'ahcsbakjcaics')
-    localStorage.setItem('role', 1)
+    localStorage.setItem('role', 2)
     localStorage.setItem('user', JSON.stringify({ username: username.current.value, password: password.current.value }))
     location.replace('/')
 
